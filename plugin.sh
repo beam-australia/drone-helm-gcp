@@ -58,25 +58,25 @@ echo "Running: helm init --client-only"
 helm init --client-only
 
 # if GCS_PLUGIN_VERSION is set, install the plugin
-if [[ -n $GCS_PLUGIN_VERSION ]]; then
-  echo "Installing helm GCS plugin version $GCS_PLUGIN_VERSION "
-  helm plugin install https://github.com/nouney/helm-gcs --version $GCS_PLUGIN_VERSION
-fi
+# if [[ -n $GCS_PLUGIN_VERSION ]]; then
+#   echo "Installing helm GCS plugin version $GCS_PLUGIN_VERSION "
+#   helm plugin install https://github.com/nouney/helm-gcs --version $GCS_PLUGIN_VERSION
+# fi
 
 # if DIFF_PLUGIN_VERSION is set, install the plugin
-if [[ -n $DIFF_PLUGIN_VERSION ]]; then
-  echo "Installing helm DIFF plugin version $DIFF_PLUGIN_VERSION "
-  helm plugin install https://github.com/databus23/helm-diff --version $DIFF_PLUGIN_VERSION
-fi
+# if [[ -n $DIFF_PLUGIN_VERSION ]]; then
+#   echo "Installing helm DIFF plugin version $DIFF_PLUGIN_VERSION "
+#   helm plugin install https://github.com/databus23/helm-diff --version $DIFF_PLUGIN_VERSION
+# fi
 
 # check if repo values provided then add that repo
-if [[ -n $HELM_REPO_NAME && -n $HELM_REPO_URL ]]; then
-  echo "Adding chart helm repo $HELM_REPO_URL "
-  helm repo add $HELM_REPO_NAME $HELM_REPO_URL
-fi
+# if [[ -n $HELM_REPO_NAME && -n $HELM_REPO_URL ]]; then
+#   echo "Adding chart helm repo $HELM_REPO_URL "
+#   helm repo add $HELM_REPO_NAME $HELM_REPO_URL
+# fi
 
-echo "Running: helm repo update"
-helm repo update
+# echo "Running: helm repo update"
+# helm repo update
 
 if [ "$PLUGIN_DEBUG" = true ]; then
     echo "helm upgrade $PLUGIN_RELEASE $PLUGIN_CHART \
