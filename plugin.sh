@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+set -v
 
 ###
 # PLUGIN_JSON_KEY
@@ -22,41 +23,12 @@ echo "${PLUGIN_JSON_KEY:-"{}"}" > /var/svc_account.json
 cat /var/svc_account.json
 gcloud auth activate-service-account --key-file=/var/svc_account.json
 
-# This tries to read environment variables. If not set, it grabs from gcloud
-cluster=${PLUGIN_CLUSTER:-$(gcloud config get-value container/cluster)}
-echo $cluster
-region=${PLUGIN_REGION:-$(gcloud config get-value compute/region)}
-echo $region
-zone=${PLUGIN_ZONE:-$(gcloud config get-value compute/zone)}
-echo $zone
-project=${PLUGIN_PROJECT:-$(gcloud config get-value core/project)}
-echo $project
-
-function var_usage() {
-    echo "No cluster is set. To set the cluster (and the region/zone where it is found), set the environment variables"
-    echo "COMPUTE_REGION=<cluster region> (regional clusters)"
-    echo "COMPUTE_ZONE=<cluster zone> (zonal clusters)"
-    echo "CONTAINER_CLUSTER=<cluster name>"
-    exit 1
-}
-
-[[ -z "$cluster" ]] && var_usage
-[ ! "$zone" -o "$region" ] && var_usage
-
-if [ -n "$region" ]; then
-  echo "Running: gcloud config set container/use_v1_api_client false"
-  gcloud config set container/use_v1_api_client false
-  echo "Running: gcloud beta container clusters get-credentials --project=\"$project\" --region=\"$region\" \"$cluster\""
-  gcloud beta container clusters get-credentials --project="$project" --region="$region" "$cluster" || exit
-else
-  echo "Running: gcloud container clusters get-credentials --project=\"$project\" --zone=\"$zone\" \"$cluster\""
-  gcloud container clusters get-credentials --project="$project" --zone="$zone" "$cluster" || exit
-fi
-
-echo "Running: kubectl config current-context"
+echo "Setting cluster context"
+gcloud config set container/use_v1_api_client false
+gcloud beta container clusters get-credentials --project="$PLUGIN_PROJECT" --zone="$PLUGIN_ZONE" "$PLUGIN_CLUSTER" || exit
 kubectl config current-context
 
-echo "Running: helm init --client-only"
+echo "Initializing helm"
 helm init --client-only
 
 if [ "$PLUGIN_DEBUG" = true ]; then
