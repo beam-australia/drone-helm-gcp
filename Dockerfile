@@ -4,9 +4,9 @@ RUN gcloud components install kubectl
 
 ARG HELM_VERSION=v2.14.0
 
-COPY helm.bash /builder/helm.bash
+COPY plugin.bash /builder/plugin.bash
 
-RUN chmod +x /builder/helm.bash && \
+RUN chmod +x /builder/plugin.bash && \
   mkdir -p /builder/helm && \
   apt-get update && \
   apt-get install -y curl && \
