@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -e
-set -v
 
 GCP_KEY=${PLUGIN_JSON_KEY:-"{}"}
 PROJECT=${PLUGIN_PROJECT:-$PROJECT}
