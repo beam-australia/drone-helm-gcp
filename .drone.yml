@@ -1,0 +1,17 @@
+kind: pipeline
+name: default
+steps:
+
+  - name: publish
+    image: plugins/docker    
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: beamaustralia/drone-helm-gcp
+      tags: ['latest', '${DRONE_TAG=${DRONE_COMMIT}}']
+
+services:
+  - name: elasticsearch
+    image: elasticsearch:5-alpine  
