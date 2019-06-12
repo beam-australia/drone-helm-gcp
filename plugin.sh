@@ -16,8 +16,7 @@ cat /var/svc_account.json
 gcloud auth activate-service-account --key-file=/var/svc_account.json
 
 echo "Setting cluster context"
-gcloud config set container/use_v1_api_client false
-gcloud beta container clusters get-credentials --project="$PROJECT" --zone="$ZONE" "$CLUSTER" || exit
+gcloud container clusters get-credentials --project="$PROJECT" --zone="$ZONE" "$CLUSTER" || exit
 kubectl config current-context
 
 echo "Initializing helm"
