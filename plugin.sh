@@ -19,6 +19,7 @@ set -e
 
 echo "Setting auth key from environment"
 echo "${PLUGIN_JSON_KEY:-"{}"}" > /var/svc_account.json
+cat /var/svc_account.json
 gcloud auth activate-service-account --key-file=/var/svc_account.json
 
 # This tries to read environment variables. If not set, it grabs from gcloud
