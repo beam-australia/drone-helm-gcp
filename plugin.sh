@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/bin/sh
+
+set -e
 
 ###
+# PLUGIN_JSON_KEY
 # PLUGIN_CLUSTER
 # PLUGIN_COMPUTE_REGION
 # PLUGIN_COMPUTE_ZONE
@@ -13,6 +16,11 @@
 # PLUGIN_VALUES
 # PLUGIN_VERSION
 ###
+
+if [ "${PLUGIN_JSON_KEY:-}" ];then
+    echo "${PLUGIN_JSON_KEY}" > /tmp/certs/svc_account.json
+    gcloud auth activate-service-account --key-file=/tmp/certs/svc_account.json
+fi
 
 # If there is no current context, get one.
 if [[ $(kubectl config current-context 2> /dev/null) == "" ]]; then
