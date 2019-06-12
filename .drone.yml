@@ -12,6 +12,3 @@ steps:
       repo: beamaustralia/drone-helm-gcp
       tags: ['latest', '${DRONE_TAG=${DRONE_COMMIT}}']
 
-services:
-  - name: elasticsearch
-    image: elasticsearch:5-alpine  
