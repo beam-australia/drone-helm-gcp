@@ -23,18 +23,20 @@ cat /var/svc_account.json
 gcloud auth activate-service-account --key-file=/var/svc_account.json
 
 # This tries to read environment variables. If not set, it grabs from gcloud
-cluster=${PLUGIN_CLUSTER:-$(gcloud config get-value container/cluster >/dev/null 2>&1)}
-region=${PLUGIN_REGION:-$(gcloud config get-value compute/region >/dev/null 2>&1)}
-zone=${PLUGIN_ZONE:-$(gcloud config get-value compute/zone >/dev/null 2>&1)}
-project=${PLUGIN_PROJECT:-$(gcloud config get-value core/project >/dev/null 2>&1)}
+cluster=${PLUGIN_CLUSTER:-$(gcloud config get-value container/cluster)}
+echo $cluster
+region=${PLUGIN_REGION:-$(gcloud config get-value compute/region)}
+echo $region
+zone=${PLUGIN_ZONE:-$(gcloud config get-value compute/zone)}
+echo $zone
+project=${PLUGIN_PROJECT:-$(gcloud config get-value core/project)}
+echo $project
 
 function var_usage() {
-    cat <<EOF
-No cluster is set. To set the cluster (and the region/zone where it is found), set the environment variables
-  COMPUTE_REGION=<cluster region> (regional clusters)
-  COMPUTE_ZONE=<cluster zone> (zonal clusters)
-  CONTAINER_CLUSTER=<cluster name>
-EOF
+    echo "No cluster is set. To set the cluster (and the region/zone where it is found), set the environment variables"
+    echo "COMPUTE_REGION=<cluster region> (regional clusters)"
+    echo "COMPUTE_ZONE=<cluster zone> (zonal clusters)"
+    echo "CONTAINER_CLUSTER=<cluster name>"
     exit 1
 }
 
