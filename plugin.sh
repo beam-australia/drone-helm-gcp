@@ -23,10 +23,10 @@ cat /var/svc_account.json
 gcloud auth activate-service-account --key-file=/var/svc_account.json
 
 # This tries to read environment variables. If not set, it grabs from gcloud
-cluster=${PLUGIN_CLUSTER:-$(gcloud config get-value container/cluster 2> /dev/null)}
-region=${PLUGIN_REGION:-$(gcloud config get-value compute/region 2> /dev/null)}
-zone=${PLUGIN_ZONE:-$(gcloud config get-value compute/zone 2> /dev/null)}
-project=${PLUGIN_PROJECT:-$(gcloud config get-value core/project 2> /dev/null)}
+cluster=${PLUGIN_CLUSTER:-$(gcloud config get-value container/cluster >/dev/null 2>&1)}
+region=${PLUGIN_REGION:-$(gcloud config get-value compute/region >/dev/null 2>&1)}
+zone=${PLUGIN_ZONE:-$(gcloud config get-value compute/zone >/dev/null 2>&1)}
+project=${PLUGIN_PROJECT:-$(gcloud config get-value core/project >/dev/null 2>&1)}
 
 function var_usage() {
     cat <<EOF
