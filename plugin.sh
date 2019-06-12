@@ -53,7 +53,11 @@ EOF
       echo "Running: gcloud container clusters get-credentials --project=\"$project\" --zone=\"$zone\" \"$cluster\""
       gcloud container clusters get-credentials --project="$project" --zone="$zone" "$cluster" || exit
     fi
+else
+  echo "Already have kube context"
 fi
+
+kubectl config current-context
 
 echo "Running: helm init --client-only"
 helm init --client-only
