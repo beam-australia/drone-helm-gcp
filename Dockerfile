@@ -1,20 +1,21 @@
 FROM google/cloud-sdk:alpine
 
-ARG HELM_VERSION=v2.14.0
-
+# configure gcloud kubectl
 COPY auth /root/.config/gcloud
-
-RUN apk --update --no-cache add openjdk7-jre curl
-
-RUN gcloud components install app-engine-java kubectl
-
+RUN mkdir -p /tmp/certs
+RUN gcloud components install kubectl
 COPY plugin.sh /builder/plugin.sh
 
-RUN chmod +x /builder/plugin.sh && \
-  mkdir -p /builder/helm && \
-  curl -SL https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz && \
-  tar zxvf helm.tar.gz --strip-components=1 -C /builder/helm linux-amd64/helm linux-amd64/tiller && \
-  rm helm.tar.gz
+# Install Helm
+ARG HELM_VERSION=v2.14.0
+ENV FILENAME helm-${HELM_VERSION}-linux-amd64.tar.gz
+ENV HELM_URL https://storage.googleapis.com/kubernetes-helm/${FILENAME}
+RUN echo $HELM_URL
+RUN apk --update --no-cache add curl \ 
+  && curl -o /tmp/$FILENAME ${HELM_URL} \
+  && tar -zxvf /tmp/${FILENAME} -C /tmp \
+  && mv /tmp/linux-amd64/helm /bin/helm \
+  && rm -rf /tmp
 
 ENV PATH=/builder/helm/:$PATH
 
