@@ -26,8 +26,8 @@ fi
 if [[ $(kubectl config current-context 2> /dev/null) == "" ]]; then
     # This tries to read environment variables. If not set, it grabs from gcloud
     cluster=${PLUGIN_CLUSTER:-$(gcloud config get-value container/cluster 2> /dev/null)}
-    region=${PLUGIN_COMPUTE_REGION:-$(gcloud config get-value compute/region 2> /dev/null)}
-    zone=${PLUGIN_COMPUTE_ZONE:-$(gcloud config get-value compute/zone 2> /dev/null)}
+    region=${PLUGIN_REGION:-$(gcloud config get-value compute/region 2> /dev/null)}
+    zone=${PLUGIN_ZONE:-$(gcloud config get-value compute/zone 2> /dev/null)}
     project=${PLUGIN_PROJECT:-$(gcloud config get-value core/project 2> /dev/null)}
 
     function var_usage() {
