@@ -4,7 +4,7 @@ FROM google/cloud-sdk:alpine
 COPY auth /root/.config/gcloud
 RUN mkdir -p /tmp/certs
 RUN gcloud components install kubectl
-COPY plugin.sh /builder/plugin.sh
+COPY plugin.sh /var/plugin.sh
 
 # Install Helm
 ARG HELM_VERSION=v2.14.0
@@ -17,6 +17,4 @@ RUN apk --update --no-cache add curl \
   && mv /tmp/linux-amd64/helm /bin/helm \
   && rm -rf /tmp
 
-ENV PATH=/builder/helm/:$PATH
-
-ENTRYPOINT ["/builder/plugin.sh"]
+ENTRYPOINT ["/var/plugin.sh"]
